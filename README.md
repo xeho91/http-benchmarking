@@ -12,12 +12,12 @@ Unless you have different headers configuration, feel free to edit it here.
 
 # Setup
 To configure testing options, edit `test.sh` file.
-You can modify **time**, **connection** and **trial**.
+You can modify **duration**, **connection** and **trial** options.
 
 # Usage
 To start testing please use:
 ```sh
-$ ./test <get/post> <testing_object>
+$ ./test.sh <get/post> <testing_object>
 ```
 Currently available testing objects:
 * GET
@@ -31,7 +31,12 @@ Currently available testing objects:
 
 Example:
 ```sh
-$ ./test get leads
+$ ./test.sh get leads
+```
+
+Or if you want to test all of existing files, just simply use:
+```sh
+$./test.sh all
 ```
 
 
