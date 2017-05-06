@@ -1,14 +1,6 @@
 function done(summary, latency, requests)
     io.output(file)
 
--- GENERAL INFO
-    -- Date & Time
-    io.write(os.date("%Y-%m-%d %H:%M:%S"))
-    io.write(",")
-    -- Threads
-    io.write(table.getn(threads))
-    io.write(",")
-
     -- for index, thread in ipairs(threads) do
     --     local id        = thread:get("id")
     --     local requests  = thread:get("requests")
@@ -18,143 +10,118 @@ function done(summary, latency, requests)
     --     io.write(msg:format(id, requests, responses))
     -- end
 
--- LATENCY
-    -- Latency min(ms)
-    io.write(latency.min/1000)
-    io.write(",")
-    -- Latency min(s)
-    io.write(latency.min/1000000)
-    io.write(",")
-    -- Latency max(ms)
-    io.write(latency.max/1000)
-    io.write(",")
-    -- Latency max(s)
-    io.write(latency.max/1000000)
-    io.write(",")
-    -- Latency avg(ms)
-    io.write(latency.mean/1000)
-    io.write(",")
-    -- Latency mean(s)
-    io.write(latency.mean/1000000)
-    io.write(",")
-    -- Latency stdev(ms)
-    io.write(latency.stdev/1000)
-    io.write(",")
-    -- Latency stdev(s)
-    io.write(latency.stdev/1000000)
-    io.write(",")
-    -- Latency percentile(5)(ms)
-    io.write(latency:percentile(5)/1000)
-    io.write(",")
-    -- Latency percentile(5)(s)
-    io.write(latency:percentile(5)/1000000)
-    io.write(",")
-    -- Latency percentile(50)(ms)
-    io.write(latency:percentile(50)/1000)
-    io.write(",")
-    -- Latency percentile(50)(s)
-    io.write(latency:percentile(50)/1000000)
-    io.write(",")
-    -- Latency percentile(95)(ms)
-    io.write(latency:percentile(95)/1000)
-    io.write(",")
-    -- Latency percentile(95)(s)
-    io.write(latency:percentile(95)/1000000)
-    io.write(",")
-
--- REQUESTS
-    -- Min req/s
-    io.write(requests.min)
-    io.write(",")
-    -- Max req/s
-    io.write(requests.max)
-    io.write(",")
-    -- Avg req/s
-    io.write(requests.mean)
-    io.write(",")
-    -- Stdev req/s
-    io.write(requests.stdev)
-    io.write(",")
-    -- Percentile(5) req/s
-    io.write(requests:percentile(5))
-    io.write(",")
-    -- Percentile(50) req/s
-    io.write(requests:percentile(50))
-    io.write(",")
-    -- Percentile(95) req/s
-    io.write(requests:percentile(95))
-    io.write(",")
-
--- SUMMARY
     local total   = summary.requests
     local errors  = summary.errors.read + summary.errors.write + summary.errors.status + summary.errors.timeout
     local success = total - errors
 
-    -- Test duration (ms)
-    io.write(summary.duration/1000)
-    io.write(",")
-    -- Test duration (s)
-    io.write(summary.duration/1000000)
-    io.write(",")
+    results = {
+    -- GENERAL INFO
+        -- Date & Time
+        os.date("%Y-%m-%d %H:%M:%S"),
+        -- Threads
+        table.getn(threads),
 
-    -- Successful responses
-    io.write(success)
-    io.write(",")
-    -- Successful responses(%)
-    io.write(success/total*100)
-    io.write(",")
+    -- LATENCY
+        -- Latency min(ms)
+        latency.min/1000,
+        -- Latency min(ms)
+        latency.min/1000,
+        -- Latency min(s)
+        latency.min/1000000,
+        -- Latency max(ms)
+        latency.max/1000,
+        -- Latency max(s)
+        latency.max/1000000,
+        -- Latency avg(ms)
+        latency.mean/1000,
+        -- Latency mean(s)
+        latency.mean/1000000,
+        -- Latency stdev(ms)
+        latency.stdev/1000,
+        -- Latency stdev(s)
+        latency.stdev/1000000,
+        -- Latency percentile(5)(ms)
+        latency:percentile(5)/1000,
+        -- Latency percentile(5)(s)
+        latency:percentile(5)/1000000,
+        -- Latency percentile(50)(ms)
+        latency:percentile(50)/1000,
+        -- Latency percentile(50)(s)
+        latency:percentile(50)/1000000,
+        -- Latency percentile(95)(ms)
+        latency:percentile(95)/1000,
+        -- Latency percentile(95)(s)
+        latency:percentile(95)/1000000,
 
-    -- Errors received
-    io.write(errors)
-    io.write(",")
-    -- Errors received(%)
-    io.write(errors/total*100)
-    io.write(",")
+    -- REQUESTS
+        -- Min req/s
+        requests.min,
+        -- Max req/s
+        requests.max,
+        -- Avg req/s
+        requests.mean,
+        -- Stdev req/s
+        requests.stdev,
+        -- Percentile(5) req/s
+        requests:percentile(5),
+        -- Percentile(50) req/s
+        requests:percentile(50),
+        -- Percentile(95) req/s
+        requests:percentile(95),
 
-    -- Errors received - connect
-    io.write(summary.errors.connect)
-    io.write(",")
-    -- Errors received - connect(%)
-    io.write(summary.errors.connect/total*100)
-    io.write(",")
-    -- Errors received - read
-    io.write(summary.errors.read)
-    io.write(",")
-    -- Errors received - read(%)
-    io.write(summary.errors.read/total*100)
-    io.write(",")
-    -- Errors received - write
-    io.write(summary.errors.write)
-    io.write(",")
-    -- Errors received - write(%)
-    io.write(summary.errors.write/total*100)
-    io.write(",")
-    -- Errors received - status
-    io.write(summary.errors.status)
-    io.write(",")
-    -- Errors received - status(%)
-    io.write(summary.errors.status/total*100)
-    io.write(",")
-    -- Errors received - timeout
-    io.write(summary.errors.timeout)
-    io.write(",")
-    -- Errors received - timeout(%)
-    io.write(summary.errors.timeout/total*100)
-    io.write(",")
+    -- SUMMARY
+        -- Test duration (ms)
+        summary.duration/1000,
+        -- Test duration (s)
+        summary.duration/1000000,
 
-    -- Data received(B)
-    io.write(summary.bytes)
-    io.write(",")
-    -- Data received(KB)
-    io.write(summary.bytes/1000)
-    io.write(",")
-    -- Data per second(B)
-    io.write(summary.bytes/(summary.duration/1000000))
-    io.write(",")
-    -- Data per second(KB)
-    io.write((summary.bytes/1000)/(summary.duration/1000000))
-    io.write("\n")
+        -- Successful responses
+        success,
+        -- Successful responses(%)
+        success/total*100,
+
+        -- Errors received
+        errors,
+        -- Errors received(%)
+        errors/total*100,
+
+    -- ERRORS
+        -- Errors received - connect
+        summary.errors.connect,
+        -- Errors received - connect(%)
+        summary.errors.connect/total*100,
+        -- Errors received - read
+        summary.errors.read,
+        -- Errors received - read(%)
+        summary.errors.read/total*100,
+        -- Errors received - write
+        summary.errors.write,
+        -- Errors received - write(%)
+        summary.errors.write/total*100,
+        -- Errors received - status
+        summary.errors.status,
+        -- Errors received - status(%)
+        summary.errors.status/total*100,
+        -- Errors received - timeout
+        summary.errors.timeout,
+        -- Errors received - timeout(%)
+        summary.errors.timeout/total*100,
+
+    -- DATA
+        -- Data received(B)
+        summary.bytes,
+        -- Data received(KB)
+        summary.bytes/1000,
+        -- Data per second(B)
+        summary.bytes/(summary.duration/1000000),
+        -- Data per second(KB)
+        (summary.bytes/1000)/(summary.duration/1000000)
+    }
+
+    for key, value in pairs(results) do
+        io.write(value .. ",")
+    end
 
     io.close(file)
-    print("Results saved in 'results' folder!")
+    print("Saved in 'results' folder!")
 end
