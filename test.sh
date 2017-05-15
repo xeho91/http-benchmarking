@@ -4,8 +4,6 @@
 #####################################
 # URL
 URL="http://vps334372.ovh.net:8080"
-# DATE FORMAT
-DATE=`date +%Y-%m-%d:%H:%M:%S`
 # THREADS SEQUENCE
 THREAD_SEQUENCE_START=1
 THREAD_SEQUENCE_END=1
@@ -70,7 +68,7 @@ start_a_test() {
                                     echo
 
                                     # Printing additional general info from bash at start of every line of test before results from Lua
-                                    printf ${DATE},${thread},${connection},${duration},${trial}, >> results/$1/${2}.csv
+                                    printf `date +%Y-%m-%d:%H:%M:%S` ,${thread},${connection},${duration},${trial}, >> results/$1/${2}.csv
 
                                     # Running wrk with parameters
                                     ./wrk -t$thread -c$connection -d$duration -s scripts/$1/$2.lua $URL

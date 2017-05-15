@@ -39,8 +39,21 @@ Or if you want to test all of existing files, just simply use:
 $./test.sh all
 ```
 
-
 # Results
 Results will be saved in `results` folder.
 Each testing object has own `.csv` file.
 It can be converted to JSON or edited with any Sheets editing program.
+
+## Cleaning results
+If you want to remove all previous data from tests, use:
+```sh
+$./clean.sh all
+```
+... or just certain file, like this:
+```sh
+$./clean <get/post> <testing_object>
+```
+Example:
+```sh
+$./clean get customers
+```
