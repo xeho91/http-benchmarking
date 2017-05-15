@@ -1,29 +1,12 @@
 function done(summary, latency, requests)
     io.output(file)
 
-    -- for index, thread in ipairs(threads) do
-    --     local id        = thread:get("id")
-    --     local requests  = thread:get("requests")
-    --     local responses = thread:get("responses")
-    --
-    --     local msg = "Thread %-2d made %-3d requests and got %-3d responses"
-    --     io.write(msg:format(id, requests, responses))
-    -- end
-
     local total   = summary.requests
     local errors  = summary.errors.read + summary.errors.write + summary.errors.status + summary.errors.timeout
     local success = total - errors
 
     results = {
-    -- GENERAL INFO
-        -- Date & Time
-        os.date("%Y-%m-%d %H:%M:%S"),
-        -- Threads
-        table.getn(threads),
-
     -- LATENCY
-        -- Latency min(ms)
-        latency.min/1000,
         -- Latency min(ms)
         latency.min/1000,
         -- Latency min(s)
@@ -121,7 +104,7 @@ function done(summary, latency, requests)
     for key, value in pairs(results) do
         io.write(value .. ",")
     end
+    io.write("\n")
 
     io.close(file)
-    print("Saved in 'results' folder!")
 end
