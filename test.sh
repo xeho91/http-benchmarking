@@ -68,14 +68,10 @@ start_a_test() {
                                     echo
 
                                     # Printing additional general info from bash at start of every line of test before results from Lua
-                                    #printf `date +%Y-%m-%d:%H:%M:%S` ,${thread},${connection},${duration},${trial}, >> results/$1/${2}.csv
-                                    #echo `date +%Y-%m-%d:%H:%M:%S`, $thread, $connection, $duration, $trial, >> results/tests.csv
                                     printf '%s,%s,%s,%s,%s,' `date +%Y-%m-%d:%H:%M:%S` "$thread" "$connection" "$duration" "$trial" >> results/$1/${2}.csv
 
-                                    #printf "Surname: %s\nName: %s\n" "$SURNAME" "$FIRSTNAME"
-
                                     # Running wrk with parameters
-                                    wrk -t $thread -c $connection -d $duration -s scripts/$1/$2.lua $URL
+                                    ./wrk -t $thread -c $connection -d $duration -s scripts/$1/$2.lua $URL
 
                                     echo
                                     echo "Results saved to 'results/$1/${2}.csv'!"
