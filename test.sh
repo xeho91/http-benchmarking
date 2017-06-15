@@ -9,14 +9,14 @@ THREAD_SEQUENCE_START=1
 THREAD_SEQUENCE_END=1
 # CONNECTIONS SEQUENCE
 CONNECTION_SEQUENCE_START=1
-CONNECTION_SEQUENCE=1
-CONNECTION_SEQUENCE_END=2
+CONNECTION_SEQUENCE=10
+CONNECTION_SEQUENCE_END=50
 # TEST DURATION SEQUENCE (in seconds)
-DURATION_SEQUENCE_START=1
-DURATION_SEQUENCE=1
-DURATION_SEQUENCE_END=2
+DURATION_SEQUENCE_START=5
+DURATION_SEQUENCE=5
+DURATION_SEQUENCE_END=5
 # TRIALS FOR EACH CONNECTION TEST
-TRIALS=2
+TRIALS=1
 #####################################
 #####################################
 #####################################
@@ -68,10 +68,14 @@ start_a_test() {
                                     echo
 
                                     # Printing additional general info from bash at start of every line of test before results from Lua
-                                    printf `date +%Y-%m-%d:%H:%M:%S` ,${thread},${connection},${duration},${trial}, >> results/$1/${2}.csv
+                                    #printf `date +%Y-%m-%d:%H:%M:%S` ,${thread},${connection},${duration},${trial}, >> results/$1/${2}.csv
+                                    #echo `date +%Y-%m-%d:%H:%M:%S`, $thread, $connection, $duration, $trial, >> results/tests.csv
+                                    printf '%s,%s,%s,%s,%s,' `date +%Y-%m-%d:%H:%M:%S` "$thread" "$connection" "$duration" "$trial" >> results/$1/${2}.csv
+
+                                    #printf "Surname: %s\nName: %s\n" "$SURNAME" "$FIRSTNAME"
 
                                     # Running wrk with parameters
-                                    ./wrk -t$thread -c$connection -d$duration -s scripts/$1/$2.lua $URL
+                                    wrk -t $thread -c $connection -d $duration -s scripts/$1/$2.lua $URL
 
                                     echo
                                     echo "Results saved to 'results/$1/${2}.csv'!"
